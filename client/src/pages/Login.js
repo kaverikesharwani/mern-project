@@ -1,44 +1,54 @@
-import { useState } from "react";
+import React, { useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../contexts/AuthContext";
+import axios from "../api/axios"; // optional (we’ll set this up next)
 
-export default function Login() {
-  const [form, setForm] = useState({ email: "", password: "" });
+const Login = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const { login } = useContext(AuthContext);
+  const navigate = useNavigate();
 
-  const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Login data:", form);
+    try {
+      // Send login data to backend
+      const res = await axios.post("/auth/login", { email, password });
+
+      // Extract token from response
+      const token = res.data.token;
+
+      // Save the token to context/localStorage
+      login(token);
+
+      // Redirect user to dashboard
+      navigate("/dashboard");
+    } catch (err) {
+      console.error(err);
+      alert("Login failed. Check credentials or server connection.");
+    }
   };
 
   return (
-    <div className="max-w-md mx-auto mt-12 p-6 bg-white rounded-lg shadow-md">
-      <h2 className="text-2xl font-semibold mb-6 text-center text-blue-600">Login</h2>
-      <form onSubmit={handleSubmit} className="space-y-4">
+    <div style={{ padding: 24 }}>
+      <h2>Login</h2>
+      <form onSubmit={handleSubmit}>
         <input
           type="email"
-          name="email"
           placeholder="Email"
-          onChange={handleChange}
-          className="w-full border px-3 py-2 rounded-md"
-          required
-        />
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        /><br /><br />
         <input
           type="password"
-          name="password"
           placeholder="Password"
-          onChange={handleChange}
-          className="w-full border px-3 py-2 rounded-md"
-          required
-        />
-        <button
-          type="submit"
-          className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700"
-        >
-          Login
-        </button>
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        /><br /><br />
+        <button type="submit">Login</button>
       </form>
     </div>
   );
-}
+};
+
+export default Login;

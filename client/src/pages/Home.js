@@ -1,10 +1,14 @@
-export default function Home() {
+import React from "react";
+import { Link } from "react-router-dom";
+
+const Home = () => {
   return (
-    <div className="text-center mt-10">
-      <h1 className="text-4xl font-bold text-blue-600">Welcome to MyApp</h1>
-      <p className="mt-4 text-gray-700">
-        This is your Home page. You’ll soon connect it to your backend.
-      </p>
+    <div style={{ padding: 24 }}>
+      <h1>Welcome to My App 👋</h1>
+      <p>This is the public home page.</p>
+      <Link to="/login">Go to Login</Link>
     </div>
   );
-}
+};
+
+export default Home;

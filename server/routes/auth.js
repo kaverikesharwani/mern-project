@@ -4,6 +4,12 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 
 const router = express.Router();
+const auth = require("../middleware/auth"); // middleware we created earlier
+
+router.get("/dashboard-data", auth, (req, res) => {
+  res.json({ message: `Welcome ${req.user.name}, this is private data!` });
+});
+
 
 // Register Route
 router.post('/register', async (req, res) => {
