@@ -1,19 +1,12 @@
-import React, { useState } from 'react';
-import Register from './components/Register';
-import Login from './components/Login';
+// src/App.jsx
+import React from 'react';
+import TaskList from './components/TaskList';
 
-function App() {
-  const [showLogin, setShowLogin] = useState(false);
-
+export default function App() {
   return (
-    <div style={{ textAlign: 'center' }}>
-      <h1>Auth System</h1>
-      <button onClick={() => setShowLogin(!showLogin)}>
-        {showLogin ? 'Go to Register' : 'Go to Login'}
-      </button>
-      {showLogin ? <Login /> : <Register />}
+    <div className="container">
+      <h1>My Tasks</h1>
+      <TaskList />
     </div>
   );
 }
-
-export default App;
